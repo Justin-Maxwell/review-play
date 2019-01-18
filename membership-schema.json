@@ -1,0 +1,174 @@
+{
+  "cert": {
+    "type": "object",
+    "description": "container only",
+    "required": "root",
+    "root": {
+      "title": "Certificate",
+      "description": "Blockpass standard certificate",
+      "type": "object",
+      "properties": {
+        "@context": {
+          "type": "array"
+        },
+        "Entity": {
+          "title": "Input Identity attributes",
+          "description": "hashes of attributes provided to generate cert",
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "person"
+            }
+          },
+          "additionalProperties": true
+        },
+        "Organisation": {
+          "$ref": "https://purl.blockpass.org/json-schemas/certificates/common/organisation/1-0-0"
+        }
+      }
+    }
+  },
+      
+      
+      
+  "certOrganisazion": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://purl.blockpass.org/schemas/certificates/common/organisation/1-0-0",
+    "title": "Issuing Organisation",
+    "description": "The organisation associated with a certificate instance",
+    
+    "type": "object",
+    
+    "properties": {
+      "identifier": {
+        "description": "what is this used for, appears to be aservice slug ????",
+        "type": "string",
+        "pattern": "as approp, ideally an included external defn"
+      },
+      
+      "url": {
+        "title": "Homepage",
+        "description": "cannonical link to organisation",
+        "type": "string",
+        "format": "uri-reference"
+      },
+      
+      "logo": {
+        "title": "Logo URL",
+        "description": "link to Blockpass logo for what?  Cert type?  Category?  ???",
+        "type": "string",
+        "format": "uri-reference"
+      },
+      
+      "legalName": {
+        "title": "Legal Name",
+        "description": "Legal name of organisation",
+        "type": "string",
+        "pattern": "^[A-Z0-9 ]*"
+      },
+      
+      "displayName": {
+        "$comment": "establish now to support / utilise later",
+        "title": "Display Name",
+        "description": "How should the name be "
+      }
+      
+    }
+  },
+  
+  
+  
+  "membershipCertCustomFields":
+  {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://purl.blockpass.org/schemas/certificates/variants/membership/1-0-0",
+    
+    "title": "Membership details",
+    "description": "_customFields for membership certificates",
+    
+    "type": "object",
+    "required": [ "memberSince", "memberForever", "membershipType" ],
+    
+    "properties": {
+      "memberSince": {
+        "title": "From",
+        "description": "The date from which the subject has been a member of the organisation at any tier",
+        "examples": [ "2017-01-01" ],
+        "$ref": "https://purl.blockpass.org/schemas/datatypes/date/1-0-0",
+        "default": "today"
+      },
+      
+      "memberForever": {
+        "title": "Life member",
+        "description": "true if membership is eternal.  Certificate can still expire and need replacing",
+        "type": "boolean",
+        "default": false
+      },
+      
+      "memberUntil": {
+        "title": "To",
+        "description": "date at which the subject's membership of the organisation at the certified tier will expire",
+        "examples": [ "2020-12-31" ],
+        "$ref": "https://purl.blockpass.org/schemas/datatypes/date/1-0-0",
+        "default": "today + 1-year"
+      },
+      
+      "membershipType": {
+        "title": "Type of member",
+        "description": "The kind of entity that has membership, as defined by the organisation",
+        "examples": [ "individual", "company", "non-profit" ],
+        "type": "string",
+        "pattern": "^[a-z][a-z- ]*",
+        "default": "individual"
+      },
+      
+      "membershipTier": {
+        "title": "Membership level",
+        "description": "The level or other sub-type of membership, as defined by the organisation, within the membershipType",
+        "examples": [ "Gold", "Free", "Founding" ],
+        "type": "string",
+        "pattern": "^[A-Z][A-Za-z0-9- ]*"
+      },
+      
+      "membershipDisplayText": {
+        "title": "Shareable text",
+        "description": "A description of the membership, to facilitate sharing where templating may not be available",
+        "examples": [ "Gold member of The Widget Association.  Member since 2019, membership expires Oct 2020."],
+        "type": "string",
+        "readOnly": "true"
+      }
+      
+      "membershipAboutUrl": {
+        "$comment": "better as JSON-LD or in links section",
+        "title": "Link to membership info",
+        "description": "page under membership organisation control that describes this membership type and/or tier",
+        "examples": [ "https://example.com/memberships/gold" ],
+        "type": "string",
+        "format": "uri-reference"
+      },
+      
+      "certificateAboutUrl": {
+        "$comment": "better as JSON-LD or in links section",
+        "title": "Link to Blockpass certificate PURL",
+        "type": "string",
+        "format": "uri-reference"
+      }
+    }
+  },
+  
+  
+  
+  "datatypeFullDate":
+  {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://purl.blockpass.org/schemas/datatypes/date/1-0-0",
+    
+    "title": "Date",
+    "description": "RFC-3339 full-date ISO-8601 profile (YYYY-MM-DD)",
+    
+    "type": "string",
+    
+    "pattern": "^((1|2)[0-9]{3})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])"
+  }
+}
